@@ -285,7 +285,7 @@ public class MenuView: UIScrollView {
     }
     
     private func centerOfScreenWidth() -> CGFloat {
-        return menuItemViews[currentPage].frame.midX - UIApplication.sharedApplication().keyWindow!.bounds.width / 2
+        return menuItemViews[currentPage].frame.midX - (UIApplication.sharedApplication().keyWindow!.bounds.width > 450 ? 450:UIApplication.sharedApplication().keyWindow!.bounds.width) / 2
     }
     
     private func contentOffsetXForCurrentPage() -> CGFloat {

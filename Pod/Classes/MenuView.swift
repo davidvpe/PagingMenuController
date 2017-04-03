@@ -64,7 +64,10 @@ open class MenuView: UIScrollView {
         }
     }
     fileprivate var centerOfScreenWidth: CGFloat {
-        return menuItemViews[currentPage].frame.midX - (UIApplication.shared.keyWindow?.bounds.width > self.frame.width ? self.frame.width:UIApplication.shared.keyWindow?.bounds.width) / 2
+        
+        let totalWidth = UIApplication.shared.keyWindow?.bounds.width ?? 0.0
+        
+        return menuItemViews[currentPage].frame.midX - (totalWidth > self.frame.width ? self.frame.width:totalWidth) / 2
     }
     fileprivate var contentOffsetXForCurrentPage: CGFloat {
         //  Get the content offset X for the current element so the next one will be visible.

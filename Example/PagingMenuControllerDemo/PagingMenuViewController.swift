@@ -17,34 +17,26 @@ class PagingMenuViewController: UIViewController {
         // Do any additional setup after loading the view, typically from a nib.
         
         let pagingMenuController = self.childViewControllers.first as! PagingMenuController
-        pagingMenuController.delegate = self
         pagingMenuController.setup(options)
-    }
-}
-
-extension PagingMenuViewController: PagingMenuControllerDelegate {
-    // MARK: - PagingMenuControllerDelegate
-    func willMove(toMenu menuController: UIViewController, fromMenu previousMenuController: UIViewController) {
-        print(#function)
-        print(previousMenuController)
-        print(menuController)
-    }
-    
-    func didMove(toMenu menuController: UIViewController, fromMenu previousMenuController: UIViewController) {
-        print(#function)
-        print(previousMenuController)
-        print(menuController)
-    }
-    
-    func willMove(toMenuItem menuItemView: MenuItemView, fromMenuItem previousMenuItemView: MenuItemView) {
-        print(#function)
-        print(previousMenuItemView)
-        print(menuItemView)
-    }
-    
-    func didMove(toMenuItem menuItemView: MenuItemView, fromMenuItem previousMenuItemView: MenuItemView) {
-        print(#function)
-        print(previousMenuItemView)
-        print(menuItemView)
+        pagingMenuController.onMove = { state in
+            switch state {
+            case let .willMoveController(menuController, previousMenuController):
+                print(previousMenuController)
+                print(menuController)
+            case let .didMoveController(menuController, previousMenuController):
+                print(previousMenuController)
+                print(menuController)
+            case let .willMoveItem(menuItemView, previousMenuItemView):
+                print(previousMenuItemView)
+                print(menuItemView)
+            case let .didMoveItem(menuItemView, previousMenuItemView):
+                print(previousMenuItemView)
+                print(menuItemView)
+            case .didScrollStart:
+                print("Scroll start")
+            case .didScrollEnd:
+                print("Scroll end")
+            }
+        }
     }
 }

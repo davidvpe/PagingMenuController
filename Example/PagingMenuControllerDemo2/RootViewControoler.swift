@@ -10,13 +10,14 @@ import UIKit
 import PagingMenuController
 
 private struct PagingMenuOptions: PagingMenuControllerCustomizable {
+    private let viewController1 = ViewController1()
+    private let viewController2 = ViewController2()
+    
     fileprivate var componentType: ComponentType {
         return .all(menuOptions: MenuOptions(), pagingControllers: pagingControllers)
     }
     
     fileprivate var pagingControllers: [UIViewController] {
-        let viewController1 = ViewController1()
-        let viewController2 = ViewController2()
         return [viewController1, viewController2]
     }
     
@@ -49,39 +50,31 @@ class RootViewControoler: UIViewController {
         
         let options = PagingMenuOptions()
         let pagingMenuController = PagingMenuController(options: options)
-        pagingMenuController.delegate = self
         pagingMenuController.view.frame.origin.y += 64
         pagingMenuController.view.frame.size.height -= 64
+        pagingMenuController.onMove = { state in
+            switch state {
+            case let .willMoveController(menuController, previousMenuController):
+                print(previousMenuController)
+                print(menuController)
+            case let .didMoveController(menuController, previousMenuController):
+                print(previousMenuController)
+                print(menuController)
+            case let .willMoveItem(menuItemView, previousMenuItemView):
+                print(previousMenuItemView)
+                print(menuItemView)
+            case let .didMoveItem(menuItemView, previousMenuItemView):
+                print(previousMenuItemView)
+                print(menuItemView)
+            case .didScrollStart:
+                print("Scroll start")
+            case .didScrollEnd:
+                print("Scroll end")
+            }
+        }
         
         addChildViewController(pagingMenuController)
         view.addSubview(pagingMenuController.view)
         pagingMenuController.didMove(toParentViewController: self)
-    }
-}
-
-extension RootViewControoler: PagingMenuControllerDelegate {
-    // MARK: - PagingMenuControllerDelegate
-    func willMove(toMenu menuController: UIViewController, fromMenu previousMenuController: UIViewController) {
-        print(#function)
-        print(previousMenuController)
-        print(menuController)
-    }
-    
-    func didMove(toMenu menuController: UIViewController, fromMenu previousMenuController: UIViewController) {
-        print(#function)
-        print(previousMenuController)
-        print(menuController)
-    }
-    
-    func willMove(toMenuItem menuItemView: MenuItemView, fromMenuItem previousMenuItemView: MenuItemView) {
-        print(#function)
-        print(previousMenuItemView)
-        print(menuItemView)
-    }
-    
-    func didMove(toMenuItem menuItemView: MenuItemView, fromMenuItem previousMenuItemView: MenuItemView) {
-        print(#function)
-        print(previousMenuItemView)
-        print(menuItemView)
     }
 }

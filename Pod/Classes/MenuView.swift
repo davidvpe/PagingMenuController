@@ -58,13 +58,7 @@ open class MenuView: UIScrollView {
         }
     }
     fileprivate var centerOfScreenWidth: CGFloat {
-        let screenWidth: CGFloat
-        if let width = UIApplication.shared.keyWindow?.bounds.width {
-            screenWidth = width
-        } else {
-            screenWidth = UIScreen.main.bounds.width
-        }
-        return menuItemViews[currentPage].frame.midX - screenWidth / 2
+        return menuItemViews[currentPage].frame.midX - (UIApplication.sharedApplication().keyWindow!.bounds.width > self.frame.width ? self.frame.width:UIApplication.sharedApplication().keyWindow!.bounds.width) / 2
     }
     fileprivate var contentOffsetXForCurrentPage: CGFloat {
         //  Get the content offset X for the current element so the next one will be visible.
@@ -336,10 +330,12 @@ open class MenuView: UIScrollView {
         contentInset = inset
     }
     
+
     fileprivate func focusMenuItem() {
         let isSelected: (MenuItemView) -> Bool = { self.menuItemViews.index(of: $0) == self.currentPage }
         
         // make selected item focused
+        
         menuItemViews.forEach {
             $0.isSelected = isSelected($0)
             if $0.isSelected {
